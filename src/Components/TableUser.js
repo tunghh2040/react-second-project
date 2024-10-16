@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { fetchAllUser } from "../services/UserServices";
+import ReactPaginate from 'react-paginate';
 
 function TableUser(props) {
     const [listUser, setListUser] = useState([]);
+    const [pageCount, setPageCount] = useState(0);
+    const [pageNum, setPageNum] = useState(1);
 
     useEffect(() => {
         //call API
-        getUser();
-    }, []);
+        getUser(pageNum);
+    }, [pageNum]);
 
-    const getUser = async () => {
-        let response = await fetchAllUser();
-        if(response && response.data && response.data.data) {
-            setListUser(response.data.data);
+    const getUser = async (page) => {
+        let response = await fetchAllUser(page);
+        if(response && response.data) {
+            setListUser(response.data);
+            setPageCount(response.total_pages);
         }
+    }
+
+    const handlePageClick = (event) => {
+        setPageNum(event.selected + 1);
     }
 
     return (<>
@@ -31,7 +39,7 @@ function TableUser(props) {
                 {
                     listUser && listUser.length > 0 && listUser.map((user, index) => {
                         return (
-                            <tr key={'user ${index}'}>
+                            <tr key={`user ${index}`}>
                                 <td>{user.id}</td>
                                 <td>{user.first_name}</td>
                                 <td>{user.last_name}</td>
@@ -42,6 +50,25 @@ function TableUser(props) {
                 }
             </tbody>
         </Table>
+        <ReactPaginate
+        breakLabel="..."
+        nextLabel=">"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="<"
+        renderOnZeroPageCount={null}
+        pageClassName="page-item"
+        previousClassName="page-item"
+        nextClassName="page-item"
+        breakClassName="page-item"
+        pageLinkClassName="page-link"
+        previousLinkClassName="page-link"
+        nextLinkClassName="page-link"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+      />
     </>);
 }
 
