@@ -1,30 +1,8 @@
-import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { fetchAllUser } from "../services/UserServices";
 import ReactPaginate from 'react-paginate';
+import CustomButton from "./CustomButton";
 
-function TableUser(props) {
-    const [listUser, setListUser] = useState([]);
-    const [pageCount, setPageCount] = useState(0);
-    const [pageNum, setPageNum] = useState(1);
-
-    useEffect(() => {
-        //call API
-        getUser(pageNum);
-    }, [pageNum]);
-
-    const getUser = async (page) => {
-        let response = await fetchAllUser(page);
-        if(response && response.data) {
-            setListUser(response.data);
-            setPageCount(response.total_pages);
-        }
-    }
-
-    const handlePageClick = (event) => {
-        setPageNum(event.selected + 1);
-    }
-
+function TableUser({ listUser, pageCount, onPageChange, onUpdateButtonClick, onDeleteButtonClick }) {
     return (<>
         <Table striped bordered hover>
             <thead>
@@ -33,17 +11,37 @@ function TableUser(props) {
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {
-                    listUser && listUser.length > 0 && listUser.map((user, index) => {
+                    listUser && listUser.length > 0
+                    && listUser
+                    .filter(user => Object.keys(user).length > 0)
+                    .map((user, index) => {
                         return (
                             <tr key={`user ${index}`}>
                                 <td>{user.id}</td>
                                 <td>{user.first_name}</td>
                                 <td>{user.last_name}</td>
                                 <td>{user.email}</td>
+                                <td className="detailButton">
+                                    <CustomButton
+                                        id="UpdateButton"
+                                        text="Update User"
+                                        onClick={() => onUpdateButtonClick(user)}
+                                        size="sm"
+                                        variant="warning"
+                                    />
+                                    <CustomButton
+                                        id="DeleteButton"
+                                        text="Delete User"
+                                        onClick={() => onDeleteButtonClick(user)}
+                                        size="sm"
+                                        variant="danger"
+                                    />
+                                </td>
                             </tr>
                         );
                     })
@@ -53,7 +51,7 @@ function TableUser(props) {
         <ReactPaginate
         breakLabel="..."
         nextLabel=">"
-        onPageChange={handlePageClick}
+        onPageChange={onPageChange}
         pageRangeDisplayed={5}
         pageCount={pageCount}
         previousLabel="<"

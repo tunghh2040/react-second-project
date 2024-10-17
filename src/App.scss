@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.ButtonList {
+  margin-bottom: 10px;
+  float: right;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.detailButton {
+  display:flex;
+  column-gap: 10px;
+}
