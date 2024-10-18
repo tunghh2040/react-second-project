@@ -2,16 +2,25 @@ import { Table } from "react-bootstrap";
 import ReactPaginate from 'react-paginate';
 import CustomButton from "./CustomButton";
 
-function TableUser({ listUser, pageCount, onPageChange, onUpdateButtonClick, onDeleteButtonClick }) {
+function TableUser({ listUser, pageCount, onPageChange, onUpdateButtonClick, onDeleteButtonClick, onSortClick }) {
     return (<>
         <Table striped bordered hover>
             <thead>
                 <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Action</th>
+                <th>ID
+                    <span> </span>
+                    <i className="fa-solid fa-sort" onClick={() => onSortClick("id", "asc")}></i>
+                </th>
+                <th>First Name
+                    <span> </span>
+                    <i className="fa-solid fa-sort" onClick={() => onSortClick("first_name", "asc")}></i>
+                </th>
+                <th>Last Name
+                </th>
+                <th>Email
+                </th>
+                <th>Action
+                </th>
                 </tr>
             </thead>
             <tbody>

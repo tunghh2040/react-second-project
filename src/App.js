@@ -7,8 +7,10 @@ import CustomButton from "./Components/CustomButton";
 import AddModal from './Components/AddModal';
 import DeleteModal from './Components/DeleteModal';
 import UpdateModal from "./Components/UpdateModal";
+import SearchBox from './Components/SearchBox';
 import { ToastContainer , toast } from 'react-toastify';
 import { fetchAllUser, postCreateUser } from "./services/UserServices";
+import _, { debounce } from 'lodash';
 
 function App() {
   const [listUser, setListUser] = useState([]);
@@ -20,6 +22,9 @@ function App() {
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const [editUser, setEditUser] = useState({});
   const [deleteUser, setDeleteUser] = useState({});
+  const [sortOrder, setSortOrder] = useState(true); // Ascending
+
+  const [searchEmail, setSearchEmail] = useState("");
 
   //call API
   const getUser = async (page) => {
@@ -114,14 +119,46 @@ function App() {
     }
   }
 
+  //Sort
+  const onSortClick = (sortField) => {
+    const updatedListUser = _.orderBy([...listUser], [sortField], [sortOrder ? "asc" : "desc"]);
+    setListUser(updatedListUser);
+    setSortOrder(!sortOrder);
+  }
+
+  //Search
+  const onSearchBoxChange = (searchValue) => {
+    setSearchEmail(searchValue);
+    console.log(searchValue);
+  };
+
+  const onSearchButtonClick = () => {
+    const newListUser = [...listUser];
+    if (searchEmail) {
+      const filteredUsers = filterUsersByEmail(newListUser, searchEmail);
+      setListUser(filteredUsers);
+    } else {
+      getUser(1);
+    }
+  };
+
+  const filterUsersByEmail = (users, emailSubstring) => {
+    return _.filter(users, user =>
+      user.email.toLowerCase().includes(emailSubstring.toLowerCase())
+    );
+  };
+
   // JSX
   return (
   <div className="App-container">
       <Header />
       <Container>
+        <div className="searchArea">
+          <SearchBox searchField="Email" onSearchBoxChange={onSearchBoxChange} />
+        </div>
         <div className="ButtonList">
-          <CustomButton text='Search User' />
-          <CustomButton text='Add User' onClick={onAddButtonClick}/>
+          <CustomButton text='Search User' onClick={onSearchButtonClick}/>
+          <CustomButton text='Add User' />
           <AddModal
               show={addModalShow}
               onAddModalClose={onAddModalClose}
@@ -146,6 +183,7 @@ function App() {
           onPageChange={onPageChange}
           onUpdateButtonClick={onUpdateButtonClick}
           onDeleteButtonClick={onDeleteButtonClick}
+          onSortClick={onSortClick}
         />
       </Container>
       <ToastContainer
