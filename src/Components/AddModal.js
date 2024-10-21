@@ -13,7 +13,6 @@ export default function AddModal({ show, onAddModalClose, onNewUserSave }) {
     onNewUserSave(userName, job);
     setUserName("");
     setJob("");
-    onAddModalClose();
   };
 
   return (

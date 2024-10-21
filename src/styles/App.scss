@@ -12,19 +12,25 @@ code {
     monospace;
 }
 
-.ButtonList {
-  margin-bottom: 10px;
+
+i {
+  cursor: pointer;
+}
+
+.searchArea {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+}
+
+.buttonList {
   float: right;
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  column-gap: 10px;
+  margin-bottom: 10px;
 }
 
 .detailButton {
   display:flex;
   column-gap: 10px;
-}
-
-i {
-  cursor: pointer;
 }

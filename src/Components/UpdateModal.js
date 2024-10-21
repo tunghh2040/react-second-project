@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export default function UpdateModal({ show, editUser, onCloseUpdateModal, onEditUserSave }) {
-    const { first_name, last_name, email } = editUser;
+export default function UpdateModal({ show, userToEdit, onUpdateModalClose, onEditUserSave }) {
+    const { first_name, last_name, email } = userToEdit;
     const [editedFirstName, setEditedFirstName] = useState("");
     const [editedLastName, setEditedLastName] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
@@ -20,7 +20,7 @@ export default function UpdateModal({ show, editUser, onCloseUpdateModal, onEdit
 
     const handleEditUserSave = () =>
     {   const editedUser = {
-            id: editUser.id,
+            id: userToEdit.id,
             first_name: editedFirstName,
             last_name: editedLastName,
             email: editedEmail,
@@ -30,7 +30,7 @@ export default function UpdateModal({ show, editUser, onCloseUpdateModal, onEdit
 
     return (
         <>
-        <Modal show={show} onHide={onCloseUpdateModal}>
+        <Modal show={show} onHide={onUpdateModalClose}>
             <Modal.Header closeButton>
             <Modal.Title>Update User</Modal.Title>
             </Modal.Header>
@@ -41,7 +41,7 @@ export default function UpdateModal({ show, editUser, onCloseUpdateModal, onEdit
                         className="form-control"
                         id="userId"
                         type="text"
-                        value={editUser.id}
+                        value={userToEdit.id}
                         disabled={true}
                     />
                     <label className="form-label" htmlFor="firstName">First Name</label>
@@ -71,7 +71,7 @@ export default function UpdateModal({ show, editUser, onCloseUpdateModal, onEdit
                 </div>
             </Modal.Body>
             <Modal.Footer>
-            <Button variant="secondary" onClick={onCloseUpdateModal}>
+            <Button variant="secondary" onClick={onUpdateModalClose}>
                 Close
             </Button>
             <Button variant="primary"

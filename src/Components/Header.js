@@ -1,34 +1,47 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import logoApp from "../assets/images/logo192.png";
+import { NavLink } from "react-router-dom";
 
-function Header(props) {
-    return (<>
-        <Container>
+function Header() {
+  return (
+    <>
+      <Container>
         <Navbar expand="lg" className="bg-body-tertiary">
-            <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Brand href="/">
+            <img
+              src={logoApp}
+              className="d-inline-blick- align-top"
+              alt="React Bootstrap Logo"
+              width="30"
+              height="30"
+            ></img>
+            <span> </span>
+            QLER JSC
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link">Link</Nav.Link>
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                    Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                    Separated link
-                </NavDropdown.Item>
-                </NavDropdown>
+              <NavLink className="nav-link" to="/">
+                Home
+              </NavLink>
+              <NavLink className="nav-link" to="/users">
+                User Manage
+              </NavLink>
             </Nav>
-            </Navbar.Collapse>
+            <Nav>
+              <NavDropdown title="Setting" id="basic-nav-dropdown">
+                <NavDropdown.Item href="#action/3.1">Login</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">Logout</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
         </Navbar>
-        </Container>
-    </>)
+      </Container>
+    </>
+  );
 }
 
 export default Header;
