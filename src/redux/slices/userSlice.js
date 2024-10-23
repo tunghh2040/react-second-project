@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUser, addUser, searchUser } from "./action";
+import { fetchUser, addUser, searchUser } from "../actions/action";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import Papa from "papaparse";

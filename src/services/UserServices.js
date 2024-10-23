@@ -8,4 +8,8 @@ const postCreateUser = (name, job) => {
     return axios.post("/api/users", { name, job });
 };
 
-export { fetchAllUser, postCreateUser };
+const loginAPI = (email, password) => {
+    return axios.post("/api/login", { email, password });
+}
+
+export { fetchAllUser, postCreateUser, loginAPI };

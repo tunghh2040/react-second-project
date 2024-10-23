@@ -3,8 +3,9 @@ import ReactPaginate from 'react-paginate';
 import CustomButton from "./CustomButton";
 
 function TableUser({ listUser, pageCount, onPageChange, onUpdateButtonClick, onDeleteButtonClick, onSortClick }) {
-    return (<>
-        <Table striped bordered hover>
+    return (
+        <div className="customize-table">
+        <Table striped bordered hover >
             <thead>
                 <tr>
                 <th>ID
@@ -76,7 +77,7 @@ function TableUser({ listUser, pageCount, onPageChange, onUpdateButtonClick, onD
         containerClassName="pagination"
         activeClassName="active"
       />
-    </>);
+    </div>);
 }
 
 export default TableUser;

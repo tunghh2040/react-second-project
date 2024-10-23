@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 import { Container } from "react-bootstrap";
-import TableUser from "../Components/TableUser";
-import CustomButton from "../Components/CustomButton";
-import AddModal from "../Components/AddModal";
-import DeleteModal from "../Components/DeleteModal";
-import UpdateModal from "../Components/UpdateModal";
-import SearchBox from "../Components/SearchBox";
+import TableUser from "../components/TableUser";
+import CustomButton from "../components/CustomButton";
+import AddModal from "../components/AddModal";
+import DeleteModal from "../components/DeleteModal";
+import UpdateModal from "../components/UpdateModal";
+import SearchBox from "../components/SearchBox";
 import { ToastContainer } from "react-toastify";
 import { CSVLink } from "react-csv";
 import { useSelector, useDispatch } from "react-redux";
@@ -22,29 +22,34 @@ import {
   sortListUser,
   inputSearchValue,
   importListUser,
-} from "../redux/userSlice";
-import { fetchUser, addUser, searchUser } from "../redux/action";
+} from "../redux/slices/userSlice";
+import { fetchUser, addUser, searchUser } from "../redux/actions/action";
+import { useNavigate } from "react-router-dom";
 
 function UserManage() {
-  const dispatch = useDispatch();
   const pageNum = useSelector((state) => state.userManage.pageNum);
   const listUser = useSelector((state) => state.userManage.listUser);
   const pageCount = useSelector((state) => state.userManage.pageCount);
   const addModalShow = useSelector((state) => state.userManage.addModalShow);
-  const updateModalShow = useSelector(
-    (state) => state.userManage.updateModalShow
-  );
+  const updateModalShow = useSelector((state) => state.userManage.updateModalShow);
   const userToEdit = useSelector((state) => state.userManage.userToEdit);
-  const deleteModalShow = useSelector(
-    (state) => state.userManage.deleteModalShow
-  );
+  const deleteModalShow = useSelector((state) => state.userManage.deleteModalShow);
   const userToDelete = useSelector((state) => state.userManage.userToDelete);
+  const isLogin = useSelector((state) => state.login.isLogin);
+
+  const fileInputRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/login"); // nếu chưa đăng nhập thì sẽ về trang login
+    }
+  }, [isLogin, navigate]);
 
   useEffect(() => {
     dispatch(fetchUser(pageNum));
   }, [dispatch, pageNum]);
-
-  const fileInputRef = useRef(null);
 
   //Paginate
   const onPageChange = (event) => {
@@ -108,7 +113,7 @@ function UserManage() {
   // JSX
   return (
     <Container>
-      <div className="searchArea">
+      <div className="searchArea col-12 col-sm-4">
         <SearchBox
           searchLabel="Email"
           searchField="email"

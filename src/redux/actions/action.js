@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAllUser, postCreateUser } from "../services/UserServices";
-import { toast } from 'react-toastify';
+import { fetchAllUser, loginAPI, postCreateUser } from "../../services/UserServices";
+import { toast } from "react-toastify";
 
 // export const changePage = createAction("CHANGE_PAGE", (event) => ({
 //   payload: event,
@@ -79,6 +79,32 @@ export const searchUser = createAsyncThunk(
       toast.error("Error...");
       // Use rejectWithValue to return a custom error message
       return rejectWithValue(error.message); // This will be the payload for the rejected action
+    }
+  }
+);
+
+export const login = createAsyncThunk(
+  "LOGIN_USER",
+  async ({ email, password }, { rejectWithValue }) => {
+
+    if (!email || !password) {
+      toast.error("Email and Password are requied");
+      return rejectWithValue(false);
+    }
+
+    try {
+        // correct email  eve.holt@reqres.in
+        let response = await loginAPI(email, password);
+
+        if (response.status === 400) {
+          return rejectWithValue(false);
+        }
+
+        if (response && response.token) {
+          return true;
+        }
+    } catch (error) {
+      return rejectWithValue(false);
     }
   }
 );
